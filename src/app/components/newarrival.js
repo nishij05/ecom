@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useState as useStateReact } from "react";
+import React, { useState, useEffect, useState } from "react";
 
 const slides = [
   {
