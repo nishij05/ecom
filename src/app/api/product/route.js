@@ -3,7 +3,7 @@ import dataModel from "../../../../models/dataModel";
 import axios from "axios";
 import dbConnect from "../../../../lib/db";
 
-export async function GET(request) {
+export async function GET() {
   await dbConnect();
 
   try {

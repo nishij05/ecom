@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useState as useStateReact } from "react";
 
 const slides = [
   {
@@ -25,10 +25,13 @@ const slides = [
 
 export default function Newarrival() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [videoError, setVideoError] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setImageError(false); // Reset image error on slide change
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -39,15 +42,24 @@ export default function Newarrival() {
     <div className="m-4 md:m-8 rounded-2xl overflow-hidden shadow-xl">
       <div className="relative w-full h-[80vh] flex items-center justify-center">
         {/* Background Video */}
-        <video
-          autoPlay
-          loop
-          muted
-          className="absolute w-full h-full object-cover z-0"
-        >
-          <source src="/fashion.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {!videoError ? (
+          <video
+            autoPlay
+            loop
+            muted
+            className="absolute w-full h-full object-cover z-0"
+            onError={() => setVideoError(true)}
+          >
+            <source src="/fashion.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src="/hero1.png"
+            alt="Fallback Background"
+            className="absolute w-full h-full object-cover z-0"
+          />
+        )}
 
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/40 z-10" />
@@ -80,14 +92,18 @@ export default function Newarrival() {
 
           {/* Right Side (Image) */}
           <div className="md:w-1/2 mt-8 md:mt-0 flex justify-end">
-            <img
-              src={slide.image}
-              alt="Slide"
-              className="h-[0px] object-contain drop-shadow-2xl saturate-150 transition duration-500"
-              // style={{
-              //   filter: "drop-shadow(0 0 15px rgba(255,255,255,0.3))",
-              // }}
-            />
+            {!imageError ? (
+              <img
+                src={slide.image}
+                alt="Slide"
+                onError={() => setImageError(true)}
+                className="h-[0px] object-contain drop-shadow-2xl saturate-150 transition duration-500"
+              />
+            ) : (
+              <div className="text-white text-center p-10">
+                <p className="text-sm text-gray-300">Image failed to load</p>
+              </div>
+            )}
           </div>
         </div>
 

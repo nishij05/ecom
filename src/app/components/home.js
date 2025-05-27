@@ -6,7 +6,7 @@ import Newarrival from "./newarrival";
 import Footer from "./footer";
 import { useCart } from "./context/CartContext";
 import Link from "next/link";
-import { ShoppingCart, Search, ChevronDown } from "lucide-react";
+import { ShoppingCart, Search } from "lucide-react";
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -54,7 +54,7 @@ export default function Home() {
   }, [searchTerm, sortOption, page, allProducts]);
 
   const handleNext = () => {
-    if ((page * limit) < totalProducts) setPage((prev) => prev + 1);
+    if (page * limit < totalProducts) setPage((prev) => prev + 1);
   };
 
   const handlePrevious = () => {
